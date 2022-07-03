@@ -18,7 +18,7 @@ const createCard = () => {
 const createCardImage = (): HTMLImageElement => {
   const cardImg = document.createElement("img");
   cardImg.classList.add("card-img");
-  cardImg.setAttribute("src", "./src/assets/images/image-product-desktop.jpg");
+  cardImg.setAttribute("src", "./assets/images/image-product-desktop.jpg");
 
   return cardImg;
 };
@@ -45,7 +45,7 @@ const createCardContent = (): HTMLDivElement => {
   cardPrice.append(h2);
   cardPrice.append(small);
   button.setAttribute("type", "button");
-  image.setAttribute("src", "./src/assets/images/icon-cart.svg");
+  image.setAttribute("src", "./assets/images/icon-cart.svg");
   button.appendChild(image);
   button.insertAdjacentText("beforeend", "Add to Cart");
   h1.textContent = "Gabrielle Essence Eau De Parfum";
@@ -68,7 +68,7 @@ window.addEventListener("resize", () => {
     ?.setAttribute(
       "src",
       windowSize < 750
-        ? "./src/assets/images/image-product-mobile.jpg"
-        : "./src/assets/images/image-product-desktop.jpg"
+        ? "./assets/images/image-product-mobile.jpg"
+        : "./assets/images/image-product-desktop.jpg"
     );
 });
