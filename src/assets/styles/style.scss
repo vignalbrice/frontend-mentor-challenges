@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Montserrat:wght@500&display=swap");
+
+// Colors Palette
+
+/** Primary **/
+$dark-cyan: hsl(158, 36%, 37%);
+$cream: hsl(30, 38%, 92%);
+
+/** Neutral **/
+$very-dark-blue: hsl(212, 21%, 14%);
+$dark-grayish-blue: hsl(228, 12%, 48%);
+$white: hsl(0, 0%, 100%);
+
+// Typography
+
+h6 {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 6px;
+  line-height: 15px;
+  text-transform: uppercase;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  color: $dark-grayish-blue;
+  margin: 0;
+  line-height: 23px;
+}
+
+h1 {
+  color: $very-dark-blue;
+  line-height: 32px;
+  text-transform: none;
+  letter-spacing: 0px;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  color: $dark-cyan;
+}
+
+h1,
+h2 {
+  font-family: "Fraunces", sans-serif;
+  font-weight: 100;
+  font-size: 32px;
+}
+
+small {
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  text-decoration: line-through;
+  color: $dark-grayish-blue;
+}
+
+// App Styles
+
+body {
+  margin: 0;
+  #app {
+    background: $cream;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    .card {
+      max-width: 600px;
+      height: 450px;
+      background-color: $white;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      .card-img {
+        max-width: 100%;
+        max-height: 100%;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+      .card-content {
+        margin: 0 2rem;
+        .card-price {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          flex: 1;
+          h2 {
+            flex-grow: 0.5;
+          }
+        }
+        button {
+          transition: all ease 0.3s;
+          &:hover {
+            background-color: #1a4032;
+          }
+          outline: none;
+          border: none;
+          cursor: pointer;
+          border-radius: 10px;
+          width: 100%;
+          height: 48px;
+          color: $white;
+          font-family: "Montserrat", sans-serif;
+          font-size: 14px;
+          background-color: $dark-cyan;
+          align-items: center;
+          img {
+            margin: 0 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .card {
+    max-width: 343px !important;
+    height: 611px !important;
+    flex-direction: column !important;
+    .card-img {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom-left-radius: 0px !important;
+    }
+    .card-content {
+      margin: 0 1rem !important;
+    }
+    h2 {
+      margin: 1rem 0;
+    }
+  }
+}
