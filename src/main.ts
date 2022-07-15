@@ -1,4 +1,6 @@
 import "./assets/styles/style.scss";
+import imgDesktop from "./assets/images/image-product-desktop.jpg";
+import imgMobile from "./assets/images/image-product-mobile.jpg";
 
 // create app
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -18,7 +20,7 @@ const createCard = () => {
 const createCardImage = (): HTMLImageElement => {
   const cardImg = document.createElement("img");
   cardImg.classList.add("card-img");
-  cardImg.setAttribute("src", "./assets/images/image-product-desktop.jpg");
+  cardImg.setAttribute("src", imgDesktop);
 
   return cardImg;
 };
@@ -45,7 +47,7 @@ const createCardContent = (): HTMLDivElement => {
   cardPrice.append(h2);
   cardPrice.append(small);
   button.setAttribute("type", "button");
-  image.setAttribute("src", "./assets/images/icon-cart.svg");
+  image.setAttribute("src", "./src/assets/images/icon-cart.svg");
   button.appendChild(image);
   button.insertAdjacentText("beforeend", "Add to Cart");
   h1.textContent = "Gabrielle Essence Eau De Parfum";
@@ -61,14 +63,12 @@ const createCardContent = (): HTMLDivElement => {
 };
 
 createCard();
-window.addEventListener("resize", () => {
-  const windowSize = window.innerWidth;
+window.addEventListener("resize", (ev: UIEvent) => {
+  console.log(ev);
+  const isMobile = window.matchMedia(
+    "(min-width: 320px) and (max-width: 426px)"
+  );
   document
     .querySelector<HTMLImageElement>(".card-img")
-    ?.setAttribute(
-      "src",
-      windowSize < 750
-        ? "./assets/images/image-product-mobile.jpg"
-        : "./assets/images/image-product-desktop.jpg"
-    );
+    ?.setAttribute("src", isMobile.matches ? imgMobile : imgDesktop);
 });
