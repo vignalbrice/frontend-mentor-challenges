@@ -65,7 +65,6 @@ const createCardContent = (): HTMLDivElement => {
 
 createCard();
 window.addEventListener("resize", (ev: UIEvent) => {
-  console.log(ev);
   const isMobile = window.matchMedia(
     "(min-width: 320px) and (max-width: 426px)"
   );
