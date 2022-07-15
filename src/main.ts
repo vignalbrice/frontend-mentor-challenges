@@ -1,6 +1,7 @@
 import "./assets/styles/style.scss";
 import imgDesktop from "./assets/images/image-product-desktop.jpg";
 import imgMobile from "./assets/images/image-product-mobile.jpg";
+import iconCart from "./assets/images/icon-cart.svg";
 
 // create app
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -47,7 +48,7 @@ const createCardContent = (): HTMLDivElement => {
   cardPrice.append(h2);
   cardPrice.append(small);
   button.setAttribute("type", "button");
-  image.setAttribute("src", "./src/assets/images/icon-cart.svg");
+  image.setAttribute("src", iconCart);
   button.appendChild(image);
   button.insertAdjacentText("beforeend", "Add to Cart");
   h1.textContent = "Gabrielle Essence Eau De Parfum";
