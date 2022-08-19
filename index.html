@@ -4,17 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- displays site properly based on user's device -->
-
+    <link rel="stylesheet" href="./src/assets/styles/style.scss" />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="./src/assets/images/favicon-32x32.png"
+      href="./images/favicon-32x32.png"
     />
-    <title>Frontend Mentor | Product preview card component</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <title>Frontend Mentor | IP Address Tracker</title>
   </head>
   <body>
-    <div id="app"></div>
+    <main id="app">
+      <header>
+        <h1>IP Address Tracker</h1>
+        <div class="search-bar">
+          <input
+            type="text"
+            name=""
+            id="search"
+            placeholder="Search for any IP address or domain"
+          />
+          <button>
+            <img src="./src/assets/images/icon-arrow.svg" alt="" />
+          </button>
+        </div>
+        <div class="ip-address-info">
+          <div class="info ip">
+            <h4>IP Address</h4>
+          </div>
+          <div class="info location">
+            <h4>Location</h4>
+          </div>
+          <div class="info timezone">
+            <h4>Timezone</h4>
+          </div>
+          <div class="info isp">
+            <h4>Isp</h4>
+          </div>
+        </div>
+      </header>
+      <div id="map-box"></div>
+    </main>
   </body>
   <script type="module" src="/src/main.ts"></script>
 </html>

@@ -1,74 +1,85 @@
-import "./assets/styles/style.scss";
-import imgDesktop from "./assets/images/image-product-desktop.jpg";
-import imgMobile from "./assets/images/image-product-mobile.jpg";
-import iconCart from "./assets/images/icon-cart.svg";
+// Here
+import mapboxgl from "mapbox-gl";
 
-// create app
-const app = document.querySelector<HTMLDivElement>("#app")!;
+type AddressInfo = {
+  as: {
+    adn: number;
+    name: string;
+    route: string;
+    domain: string;
+  };
+  ip: string;
+  isp: string;
+  location: {
+    country: string;
+    region: string;
+    city: string;
+    geonameId: number;
+    lat: number;
+    lng: number;
+    postalCode: string;
+    timezone: string;
+  };
+};
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiYnJpY2V2aWduYWwiLCJhIjoiY2syYTlqY2F0MGw1bTNtcGUza2c4OWdnZyJ9.IXoN76srzhVVYbSW_sEJng";
+const map = new mapboxgl.Map({
+  container: "map-box", // container ID
+  style: "mapbox://styles/mapbox/streets-v11", // style URL
+  zoom: 9, // starting zoom
+});
+const getIPAddress = async (ipAddress: string) => {
+  try {
+    const response = await fetch(
+      `https://geo.ipify.org/api/v2/country,city?apiKey=at_y9dSnNma5DYgCifv1NIq0PVj6sFzG&ipAddress=${ipAddress}`
+    );
+    const result: AddressInfo = await response.json();
+    const infoList = document.getElementsByClassName("info");
+    const data = Object.values({
+      ip: result.ip,
+      location: result.location.city,
+      timezone: `UTC ${result.location.timezone}`,
+      isp: result.isp,
+    });
 
-const createCard = () => {
-  // create card
-  const card = document.createElement("div");
-  card.classList.add("card");
-
-  card.append(createCardImage());
-
-  card.append(createCardContent());
-
-  app.insertAdjacentElement("afterbegin", card);
+    for (let i = 0; i <= infoList.length; i++) {
+      if (document.getElementsByClassName("value").item(i) === null) {
+        const h3 = document.createElement("h3");
+        h3.classList.add("value");
+        infoList.item(i)?.appendChild(h3);
+        h3.textContent = `${data[i]}`;
+      } else {
+        document
+          .getElementsByClassName("value")
+          .item(i)!.textContent = `${data[i]}`;
+      }
+    }
+    getMarkerByIPAddress(result);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const createCardImage = (): HTMLImageElement => {
-  const cardImg = document.createElement("img");
-  cardImg.classList.add("card-img");
-  cardImg.setAttribute("src", imgDesktop);
-
-  return cardImg;
-};
-
-const createCardContent = (): HTMLDivElement => {
-  const cardContent = document.createElement("div");
-  cardContent.classList.add("card-content");
-  /*
-  const elementsToString = ["h6", "h1", "p", "h2", "button", "small", "img"];
-  elementsToString.forEach((el) => {
-    document.createElement(el);
-  }) */
-  const h1 = document.createElement("h1");
-  const h2 = document.createElement("h2");
-  const h6 = document.createElement("h6");
-  const p = document.createElement("p");
-  const small = document.createElement("small");
-  const cardPrice = document.createElement("div");
-  const button = document.createElement("button");
-  const image = document.createElement("img");
-  cardPrice.classList.add("card-price");
-  h2.textContent = "$149.99";
-  small.textContent = "$169.99";
-  cardPrice.append(h2);
-  cardPrice.append(small);
-  button.setAttribute("type", "button");
-  image.setAttribute("src", iconCart);
-  button.appendChild(image);
-  button.insertAdjacentText("beforeend", "Add to Cart");
-  h1.textContent = "Gabrielle Essence Eau De Parfum";
-  h6.textContent = "Perfume";
-  p.textContent =
-    "A floral, solar and voluptuous interpretation composed by Olivier Polge, Perfumer-Creator for the House of CHANEL";
-  const elements = [h6, h1, p, cardPrice, button];
-  elements.forEach((el) => {
-    cardContent.append(el);
-  });
-
-  return cardContent;
-};
-
-createCard();
-window.addEventListener("resize", () => {
-  const isMobile = window.matchMedia(
-    "(min-width: 320px) and (max-width: 426px)"
+const getMarkerByIPAddress = (addressInfo: AddressInfo) => {
+  const el = document.createElement("div");
+  el.className = "marker";
+  const marker = new mapboxgl.Marker(el);
+  map.setZoom(15);
+  map.setCenter(
+    [addressInfo.location.lng, addressInfo.location.lat] // starting position [lng, lat]
   );
-  document
-    .querySelector<HTMLImageElement>(".card-img")
-    ?.setAttribute("src", isMobile.matches ? imgMobile : imgDesktop);
+  // make a marker for each feature and add to the map
+  marker
+    .setLngLat([addressInfo.location.lng, addressInfo.location.lat])
+    .addTo(map);
+};
+
+const search = document.querySelector<HTMLInputElement>("#search");
+const button = document.querySelector<HTMLButtonElement>("button");
+
+search!.defaultValue = "192.212.174.101";
+getIPAddress(search!.defaultValue);
+button!.addEventListener("click", () => {
+  const value = search!.value;
+  getIPAddress(value);
 });
