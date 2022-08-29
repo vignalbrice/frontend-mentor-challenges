@@ -1,0 +1,44 @@
+.card-front-wrapper {
+  animation: ease 0.8s slideInRight normal;
+}
+
+.card-back-wrapper {
+  animation: ease 1s slideInLeft both;
+}
+
+form {
+  animation: ease 0.9s slideInBottom forwards;
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
