@@ -11,44 +11,81 @@
       sizes="32x32"
       href="./images/favicon-32x32.png"
     />
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <title>Frontend Mentor | IP Address Tracker</title>
+
+    <title>Frontend Mentor | Interactive card details</title>
   </head>
   <body>
     <main id="app">
       <header>
-        <h1>IP Address Tracker</h1>
-        <div class="search-bar">
-          <input
-            type="text"
-            name=""
-            id="search"
-            placeholder="Search for any IP address or domain"
-          />
-          <button>
-            <img src="./src/assets/images/icon-arrow.svg" alt="" />
-          </button>
+        <div class="card-back-wrapper">
+          <img src="./src/assets/images/bg-card-back.png" alt="card-back-img" />
+          <div id="CVV">000</div>
         </div>
-        <div class="ip-address-info">
-          <div class="info ip">
-            <h4>IP Address</h4>
+        <div class="card-front-wrapper">
+          <img src="./src/assets/images/bg-card-front.png" alt="card-front" />
+          <div class="logo">
+            <div class="big"></div>
+            <div class="small"></div>
           </div>
-          <div class="info location">
-            <h4>Location</h4>
-          </div>
-          <div class="info timezone">
-            <h4>Timezone</h4>
-          </div>
-          <div class="info isp">
-            <h4>Isp</h4>
+          <div id="card-number">0000 0000 0000 0000</div>
+          <div class="card-footer">
+            <div id="cardholder-name">JANE APPLESEED</div>
+            <div id="expiry-date">
+              <span class="month-view">00</span>/<span class="year-view"
+                >00</span
+              >
+            </div>
           </div>
         </div>
       </header>
-      <div id="map-box"></div>
+      <section>
+        <form>
+          <div class="form-control">
+            <label>Cardholder name</label>
+            <input
+              type="text"
+              name="cardholder-name"
+              placeholder="e.g. Jane Appleseed"
+            />
+          </div>
+          <div class="form-control">
+            <label>Card number</label>
+            <input
+              type="text"
+              name="card-number"
+              placeholder="e.g. 1234 5678 9123 0000"
+            />
+          </div>
+          <div class="form-footer">
+            <div class="form-control">
+              <label id="expiry-date-label">Exp. Date (MM/YY)</label>
+              <div class="expiry-date-form">
+                <input
+                  type="text"
+                  name="month"
+                  placeholder="MM"
+                  maxlength="2"
+                  min="00"
+                  max="12"
+                />
+                <input type="text" name="year" placeholder="YY" maxlength="2" />
+              </div>
+            </div>
+
+            <div class="form-control form-cvc">
+              <label>CVC</label>
+              <input
+                type="text"
+                name="CVV"
+                placeholder="e.g. 123"
+                maxlength="3"
+              />
+            </div>
+          </div>
+          <button type="submit">Confirm</button>
+        </form>
+      </section>
     </main>
   </body>
-  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/ts/main.ts"></script>
 </html>
