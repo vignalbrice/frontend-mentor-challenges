@@ -4,88 +4,95 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- displays site properly based on user's device -->
-    <link rel="stylesheet" href="./src/assets/styles/style.scss" />
-    <link rel="stylesheet" href="./src/assets/styles/animation.scss" />
+    <link rel="stylesheet" href="./src/assets/styles/main.scss" />
 
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="./images/favicon-32x32.png"
+      href="./assets/favicon-32x32.png"
     />
 
-    <title>Frontend Mentor | Interactive card details</title>
+    <title>Password generator app</title>
   </head>
   <body>
     <main id="app">
-      <header>
-        <div class="card-back-wrapper">
-          <img src="./src/assets/images/bg-card-back.png" alt="card-back-img" />
-          <div id="CVV">000</div>
-        </div>
-        <div class="card-front-wrapper">
-          <img src="./src/assets/images/bg-card-front.png" alt="card-front" />
-          <div class="logo">
-            <div class="big"></div>
-            <div class="small"></div>
+      <h2 class="app-title">Password Generator</h2>
+      <section class="app-container">
+        <header class="app-header">
+          <input
+            class="password-text"
+            type="text"
+            value="PTx1f5DaFX"
+            placeholder="P4$5W0rD!"
+            disabled
+          />
+          <button class="clipboard-btn">
+            <svg width="21" height="24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20.341 3.091 17.909.659A2.25 2.25 0 0 0 16.319 0H8.25A2.25 2.25 0 0 0 6 2.25V4.5H2.25A2.25 2.25 0 0 0 0 6.75v15A2.25 2.25 0 0 0 2.25 24h10.5A2.25 2.25 0 0 0 15 21.75V19.5h3.75A2.25 2.25 0 0 0 21 17.25V4.682a2.25 2.25 0 0 0-.659-1.591ZM12.469 21.75H2.53a.281.281 0 0 1-.281-.281V7.03a.281.281 0 0 1 .281-.281H6v10.5a2.25 2.25 0 0 0 2.25 2.25h4.5v1.969a.282.282 0 0 1-.281.281Zm6-4.5H8.53a.281.281 0 0 1-.281-.281V2.53a.281.281 0 0 1 .281-.281H13.5v4.125c0 .621.504 1.125 1.125 1.125h4.125v9.469a.282.282 0 0 1-.281.281Zm.281-12h-3v-3h.451c.075 0 .147.03.2.082L18.667 4.6a.283.283 0 0 1 .082.199v.451Z"
+                fill="#A4FFAF"
+              />
+            </svg>
+          </button>
+        </header>
+        <article class="app-content">
+          <div class="app-content-header">
+            <p class="character-length">Character Length</p>
+            <div class="character-view">10</div>
           </div>
-          <div id="card-number">0000 0000 0000 0000</div>
-          <div class="card-footer">
-            <div id="cardholder-name">JANE APPLESEED</div>
-            <div id="expiry-date">
-              <span class="month-view">00</span>/<span class="year-view"
-                >00</span
-              >
+          <div class="range">
+            <input
+              type="range"
+              min="0"
+              max="20"
+              value="10"
+              class="slider"
+              id="character-slider"
+            />
+          </div>
+          <div class="app-content-wrapper">
+            <div class="form-checkbox">
+              <input
+                type="checkbox"
+                name=""
+                id="uppercase"
+                class="checkboxes"
+              />
+              <label for="uppercase">Include Uppercase Letters</label>
+            </div>
+            <div class="form-checkbox">
+              <input
+                type="checkbox"
+                name=""
+                id="lowercase"
+                class="checkboxes"
+              />
+              <label for="lowercase">Include Lowercase Letters</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" name="" id="numbers" class="checkboxes" />
+              <label for="numbers">Include Numbers</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" name="" id="symbols" class="checkboxes" />
+              <label for="symbols">Include Symbols</label>
             </div>
           </div>
-        </div>
-      </header>
-      <section>
-        <form>
-          <div class="form-control">
-            <label>Cardholder name</label>
-            <input
-              type="text"
-              name="cardholder-name"
-              placeholder="e.g. Jane Appleseed"
-            />
-          </div>
-          <div class="form-control">
-            <label>Card number</label>
-            <input
-              type="text"
-              name="card-number"
-              placeholder="e.g. 1234 5678 9123 0000"
-            />
-          </div>
-          <div class="form-footer">
-            <div class="form-control">
-              <label id="expiry-date-label">Exp. Date (MM/YY)</label>
-              <div class="expiry-date-form">
-                <input
-                  type="text"
-                  name="month"
-                  placeholder="MM"
-                  maxlength="2"
-                  min="00"
-                  max="12"
-                />
-                <input type="text" name="year" placeholder="YY" maxlength="2" />
+          <footer class="app-content-footer">
+            <div class="password-strength">
+              <span class="strength-title">Strength</span>
+              <div class="strength-force">
+                <span class="strength-force-title"></span>
+                <div class="strength-force-bars"></div>
               </div>
             </div>
-
-            <div class="form-control form-cvc">
-              <label>CVC</label>
-              <input
-                type="text"
-                name="CVV"
-                placeholder="e.g. 123"
-                maxlength="3"
-              />
-            </div>
-          </div>
-          <button type="submit">Confirm</button>
-        </form>
+            <button type="button">
+              Generate
+              <img src="./src/assets/images/icon-arrow-right.svg" alt="" />
+            </button>
+          </footer>
+        </article>
       </section>
     </main>
   </body>

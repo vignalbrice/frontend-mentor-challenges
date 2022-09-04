@@ -1,206 +1,152 @@
-import iconComplete from "../assets/images/icon-complete.svg";
-import { validateCVV } from "./helpers/validateCVV";
+const range = document.querySelector<HTMLInputElement>(".slider")!;
+const characterView =
+  document.querySelector<HTMLDivElement>(".character-view")!;
+const strengthForceTitle = document.querySelector<HTMLSpanElement>(
+  ".strength-force-title"
+)!;
 
-const form = document.querySelector("form");
-
-const section = document.querySelector("section");
-
-const cardHolderName = document.querySelector<HTMLInputElement>(
-  "[name='cardholder-name']"
-);
-const cardNumber = document.querySelector<HTMLInputElement>(
-  "[name='card-number']"
-);
-const cardMonth = document.querySelector<HTMLInputElement>("[name='month']");
-
-const cardYear = document.querySelector<HTMLInputElement>("[name='year']");
-
-const CVC = document.querySelector<HTMLInputElement>("[name='CVV']");
-
-const cardHolderNameView =
-  document.querySelector<HTMLDivElement>("#cardholder-name");
-
-const cardNumberView = document.querySelector<HTMLDivElement>("#card-number");
-const cardExpiryDateWrapper =
-  document.querySelector<HTMLDivElement>(".expiry-date-form");
-const monthView = document.querySelector<HTMLDivElement>(".month-view");
-const yearView = document.querySelector<HTMLDivElement>(".year-view");
-const cvvView = document.querySelector<HTMLDivElement>("#CVV");
-
-const setValueByEventListener = (e: Event, element: HTMLDivElement) => {
-  const target = e.target;
-  const value = (target as HTMLInputElement).value;
-  element.innerHTML = value;
+const COLORS = {
+  $neongreen: "#a4ffaf",
+  $red: "#f64a4a",
+  $orange: "#fb7c58",
+  $yellow: "#f8cd65",
+  $almostwhite: "#e6e5ea",
+  $dakrgrey: "#24232c",
 };
 
-const onElementFocusedAddError = (element: HTMLElement, msg: string) => {
-  element?.addEventListener("focusout", (e) => {
-    const target = e.target;
-    const value = (target as HTMLInputElement).value;
-    if (value.length === 0) addError(element, msg);
-  });
-};
+const barsContainer = document.querySelector(".strength-force-bars")!;
+const passwordInput =
+  document.querySelector<HTMLInputElement>(".password-text")!;
 
-/*const acceptedCreditCards = {
-  visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
-  mastercard:
-    /^5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}$/,
-  amex: /^3[47][0-9]{13}$/,
-  discover:
-    /^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$/,
-  diners_club: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
-  jcb: /^(?:2131|1800|35[0-9]{3})[0-9]{11}$/,
-};
-function validateCardNumber(creditCard: string) {
-  const creditCardNumber = creditCard.replace(/\D/g, "");
-  if (acceptedCreditCards.amex.test(creditCardNumber)) {
-    return true;
+const clipboardBtn =
+  document.querySelector<HTMLButtonElement>(".clipboard-btn");
+
+enum PasswordStrength {
+  TOO_WEAK = "Too Weak!",
+  WEAK = "Weak",
+  MEDIUM = "Medium",
+  STRONG = "Strong",
+}
+const CHARACTERS =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+const makePasswordByLength = (length: number) => {
+  let result = "";
+  const charactersLength = CHARACTERS.length;
+  for (let i = 0; i < length; i++) {
+    result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
   }
-  return false;
-}*/
-cardHolderName?.addEventListener("input", (e) => {
-  const target = e.target;
-  const value = (target as HTMLInputElement).value;
-  setValueByEventListener(e, cardHolderNameView!);
-  if (value.length > 0) {
-    removeError(cardHolderName, document.querySelector(".error")!);
+  return result;
+};
+
+const fillBarsByColorElement = (
+  color: string,
+  element: HTMLDivElement | null
+) => {
+  if (element) {
+    element.style.backgroundColor = color;
+    element.style.borderColor = color;
   }
+};
+
+const removeBarsColoredByElement = (element: HTMLDivElement) => {
+  element.style.backgroundColor = COLORS.$dakrgrey;
+  element.style.borderColor = COLORS.$almostwhite;
+};
+
+const fillBars = (
+  index: number,
+  color: string,
+  elements: NodeListOf<HTMLDivElement>
+) => {
+  for (let i = 0; i <= elements.length; i++) {
+    if (i <= index) {
+      fillBarsByColorElement(color, elements.item(i));
+    } else if (elements.item(i)) {
+      removeBarsColoredByElement(elements.item(i));
+    }
+  }
+};
+
+const getStrengthPasswordByValue = (
+  strengthValue: string,
+  elements: NodeListOf<HTMLDivElement>
+) => {
+  const strength = parseInt(strengthValue);
+  const password = makePasswordByLength(strength);
+  passwordInput.value = password;
+
+  if (strength >= 1 && strength <= 5) {
+    strengthForceTitle.innerHTML = PasswordStrength.TOO_WEAK;
+    fillBars(0, COLORS.$red, elements);
+  } else if (strength > 5 && strength < 10) {
+    strengthForceTitle.innerHTML = PasswordStrength.WEAK;
+    fillBars(1, COLORS.$orange, elements);
+  } else if (strength >= 10 && strength <= 15) {
+    strengthForceTitle.innerHTML = PasswordStrength.MEDIUM;
+    fillBars(2, COLORS.$yellow, elements);
+  } else if (strength > 15) {
+    strengthForceTitle.innerHTML = PasswordStrength.STRONG;
+    fillBars(elements.length, COLORS.$neongreen, elements);
+  }
+};
+
+//  Initiliaze the range value at 50 percent
+const initializeRangeValue = () => {
+  const bg = window.getComputedStyle(range).getPropertyValue("--background");
+  const slider = getComputedStyle(range).getPropertyValue("--slider");
+  characterView.innerHTML = range.value;
+  strengthForceTitle.innerHTML = "Medium";
+  for (let i = 0; i < 3; i++) {
+    barsContainer.insertAdjacentHTML(
+      "afterbegin",
+      `<div class="bar filled"></div>`
+    );
+  }
+
+  barsContainer.insertAdjacentHTML("beforeend", `<div class="bar"></div>`);
+
+  range.setAttribute(
+    "style",
+    `background:linear-gradient(to right,${slider},${slider} ${
+      parseInt(range!.value) * 5
+    }%,${bg} ${parseInt(range!.value) * 5}%)`
+  );
+  const bars = document.querySelectorAll<HTMLDivElement>(".bar");
+  fillBars(2, COLORS.$yellow, bars);
+  return bars;
+};
+// Get nodeList Elements
+const elements = initializeRangeValue();
+
+// Add layer to copntrols range value
+range!.addEventListener("input", function (ev) {
+  const target = ev.target;
+  const value = (target as HTMLInputElement).value;
+  characterView.innerHTML = value;
+  const bg = window.getComputedStyle(range!).getPropertyValue("--background");
+  const slider = getComputedStyle(range!).getPropertyValue("--slider");
+  getStrengthPasswordByValue(value, elements);
+  range!.setAttribute(
+    "style",
+    `background:linear-gradient(to right,${slider},${slider} ${
+      parseInt(value) * 5
+    }%,${bg} ${parseInt(value) * 5}%)`
+  );
 });
 
-// Errors
-onElementFocusedAddError(cardHolderName!, "Can't be blank");
-onElementFocusedAddError(CVC!, "Can't be blank");
-onElementFocusedAddError(cardNumber!, "Wrong format, numbers only");
+const copyTextToClipboard = async (text: string) => {
+  await navigator.clipboard.writeText(text);
+};
 
-form!.addEventListener("submit", (e) => {
+clipboardBtn?.addEventListener("click", (e) => {
   e.preventDefault();
-  if (
-    cardHolderName!.value.length > 0 &&
-    cardNumber!.value.length > 0 &&
-    cardMonth!.value.length > 0 &&
-    cardYear!.value.length > 0 &&
-    CVC!.value.length > 0
-  ) {
-    section!.removeChild(form!);
-    const successDiv = document.createElement("div");
-
-    successDiv.classList.add("success");
-    successDiv.innerHTML = `
-    <img src="${iconComplete}" />
-    <h1>Thank you!</h1>
-    <h3>We’ve added your card details</h3>
-    <button type="button">Continue</button>
-    `;
-    section!.appendChild(successDiv);
-  }
-});
-
-function addError(element: HTMLElement, msg: string) {
-  element.classList.add("error-field");
-  const error = document.createElement("small");
-  error.classList.add("error");
-  error.innerHTML = msg;
-  console.log(error !== null);
-  if (element.contains(error)) return;
-  else element.insertAdjacentElement("afterend", error);
-}
-
-function removeError(element: HTMLElement, afterElement: HTMLElement) {
-  if (afterElement == null) return;
-  element.classList.remove("error-field");
-  afterElement.remove();
-}
-
-function separateDigitByFourSpaces(value: string) {
-  let newVal = "";
-  // write regex to remove any space
-  const val = value.replace(/\s/g, "");
-  // iterate through each numver
-  for (var i = 0; i < val.length; i++) {
-    // add space if modulus of 4 is 0
-    if (i % 4 == 0 && i > 0) newVal = newVal.concat(" ");
-    // concatenate the new value
-    newVal = newVal.concat(val[i]);
-  }
-  return newVal;
-}
-
-cardNumber?.addEventListener("keyup", (e) => {
-  const target = e.target;
-  const value = (target as HTMLInputElement).value;
-  const newVal = separateDigitByFourSpaces(value);
-  cardNumber.value = newVal;
-  cardNumberView!.innerHTML = newVal;
-});
-
-cardNumber?.addEventListener("keydown", (e) => {
-  const target = e.target;
-  const value = (target as HTMLInputElement).value;
-  const newVal = separateDigitByFourSpaces(value);
-  // update the final value in the html input
-  if (newVal.length > 18 && e.key !== "Backspace") e.preventDefault();
-});
-
-cardMonth?.addEventListener("keyup", (e) => {
-  const target = e.currentTarget!;
-  const value = (target as HTMLInputElement).value;
-  if (value.length > 0) {
-    if (Number(value) >= 13 && e.key !== "Backspace") {
-      cardMonth.value = value.substring(0, value.length - 1);
-      return;
-    }
-    cardMonth.value = value.replace(/\D/g, "");
-    monthView!.innerHTML = value.replace(/\D/g, "");
-  } else {
-    monthView!.innerHTML = "00";
-  }
-});
-
-cardMonth?.addEventListener("focusout", (e) => {
-  const target = e.currentTarget!;
-  const value = (target as HTMLInputElement).value;
-  if (value.length === 0) {
-    cardMonth.classList.add("error-field");
-    const error = document.createElement("small");
-    error.classList.add("error");
-    error.innerHTML = "Can't be blank";
-    cardExpiryDateWrapper?.insertAdjacentElement("afterend", error);
-  } else removeError(cardMonth, document.querySelector(".error")!);
-});
-
-cardYear?.addEventListener("keyup", (e) => {
-  const target = e.currentTarget;
-  const value = (target as HTMLInputElement).value;
-  if (value.length > 0) {
-    cardYear.value = value.replace(/[^0-9]/g, "");
-    setValueByEventListener(e, yearView!);
-  }
-});
-
-cardYear?.addEventListener("focusout", (e) => {
-  const target = e.currentTarget!;
-  const value = (target as HTMLInputElement).value;
-  if (value.length === 0) {
-    cardYear?.classList.add("error-field");
-    const error = document.createElement("small");
-    error.classList.add("error");
-    error.innerHTML = "Can't be blank";
-    cardExpiryDateWrapper?.insertAdjacentElement("afterend", error);
-  } else removeError(cardYear, document.querySelector(".error")!);
-});
-
-CVC?.addEventListener("keyup", (e) => {
-  const target = e.currentTarget;
-  const value = (target as HTMLInputElement).value;
-  const validCVV = validateCVV(value);
-  if (value.length > 0) {
-    removeError(CVC, document.querySelector(".error")!);
-    if (validCVV && e.key !== "Backspace") {
-      e.preventDefault();
-    }
-    cvvView!.innerHTML = value.replace(/\D/g, "");
-    CVC.value = value.replace(/\D/g, "");
-  } else {
-    cvvView!.innerHTML = "000";
-  }
+  copyTextToClipboard(passwordInput.value);
+  clipboardBtn.insertAdjacentHTML(
+    "beforebegin",
+    "<p class='clipboard-text'>Copied</p>"
+  );
+  setTimeout(() => {
+    document.querySelector(".clipboard-text")!.remove();
+  }, 900);
 });
