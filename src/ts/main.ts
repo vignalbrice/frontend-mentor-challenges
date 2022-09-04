@@ -1,3 +1,5 @@
+export {};
+
 const range = document.querySelector<HTMLInputElement>(".slider")!;
 const characterView =
   document.querySelector<HTMLDivElement>(".character-view")!;
