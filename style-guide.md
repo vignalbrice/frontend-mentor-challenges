@@ -11,23 +11,24 @@ The designs were created to the following widths:
 
 ### Primary
 
-- Linear gradient (active input border): hsl(249, 99%, 64%) to hsl(278, 94%, 30%)
-- Red (input errors): hsl(0, 100%, 66%)
+- Purple: hsl(259, 100%, 65%)
+- Light red: hsl(0, 100%, 67%)
 
 ### Neutral
 
 - White: hsl(0, 0%, 100%)
-- Light grayish violet: hsl(270, 3%, 87%)
-- Dark grayish violet: hsl(279, 6%, 55%)
-- Very dark violet: hsl(278, 68%, 11%)
+- Off white: hsl(0, 0%, 94%)
+- Light grey: hsl(0, 0%, 86%)
+- Smokey grey: hsl(0, 1%, 44%)
+- Off black: hsl(0, 0%, 8%)
 
 ## Typography
 
 ### Body Copy
 
-- Font size: 18px
+- Font size (inputs): 32px
 
 ### Font
 
-- Family: [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk)
-- Weights: 500
+- Family: [Poppins](https://fonts.google.com/specimen/Poppins)
+- Weights: 400i, 700, 800i

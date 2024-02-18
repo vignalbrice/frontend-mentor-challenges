@@ -1,308 +1,185 @@
-@font-face {
-  font-family: JetBrains-BoldItalic;
-  src: url("../fonts/static/JetBrainsMono-BoldItalic.ttf");
+@import "fonts";
+@import "colors";
+
+// Global Style Reset
+* {
+  margin: 0;
+  padding: 0;
 }
 
-@font-face {
-  font-family: JetBrains-Bold;
-  src: url("../fonts/static/JetBrainsMono-Bold.ttf");
-}
-
-@font-face {
-  font-family: JetBrains-Mono;
-  src: url("../fonts/JetBrainsMono-VariableFont_wght.ttf");
-}
-
-// Colors Palette
-$dakrgrey: #24232c;
-$grey: #817d92;
-$almostwhite: #e6e5ea;
-$verydarkgrey: #18171f;
-$neongreen: #a4ffaf;
-$red: #f64a4a;
-$orange: #fb7c58;
-$yellow: #f8cd65;
-
+body,
 html,
-body {
+main {
   width: 100%;
   height: 100%;
-  margin: 0;
+}
+
+h1 {
+  font-family: "Poppins-Regular", sans-serif;
+  font-weight: thin;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+article {
+  animation: cardEaseInLeft ease-in 0.4s normal;
 }
 
 main {
   display: flex;
+  background-color: $lightgrey;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: linear-gradient(180deg, #14131b, #08070b 30%) no-repeat;
-  height: 100%;
+  align-items: center;
 }
-
-h2 {
-  font-family: JetBrains-Bold;
-  color: $grey;
-  font-size: 16px;
-  line-height: normal;
-  letter-spacing: 0px;
-  margin: 1rem 0;
-}
-
-.filled-yellow {
-  background-color: $yellow;
-  border: $yellow 2px solid !important;
-}
-
-.filled-red {
-  background-color: $red;
-  border: $red 2px solid !important;
-}
-.filled-orange {
-  background-color: $orange;
-  border: $orange 2px solid !important;
-}
-.filled-green {
-  background-color: $neongreen;
-  border: $neongreen 2px solid !important;
-}
-.app-container {
-  width: 90%;
-  height: 500px;
-  .app-header {
-    width: 100%;
-    height: 64px;
-    background-color: $dakrgrey;
-    margin-bottom: 1rem;
+.separator {
+  display: flex;
+  margin-top: 1.2rem;
+  button {
+    all: unset;
+    outline: none;
+    cursor: pointer;
     display: flex;
+    justify-content: center;
     align-items: center;
-
-    input[type="text"] {
-      font-size: 24px;
-      font-family: JetBrains-Mono;
-      color: $almostwhite;
-      margin-left: 1rem;
-      background: transparent;
-      flex-grow: 1;
-      border: none;
-      outline: none;
-    }
-    .clipboard-btn {
-      all: unset;
-      cursor: pointer;
-      transition: all ease 250ms;
-      margin-right: 1rem;
-      svg {
-        &:hover {
-          path {
-            fill: $almostwhite !important;
-          }
-        }
-      }
+    border-radius: 50%;
+    width: 94px;
+    height: 94px;
+    background-color: $purple;
+    transition: all ease 0.3s;
+    &:hover {
+      background-color: $black;
     }
   }
-  .app-content {
-    width: 100%;
-    height: 85%;
-    background-color: $dakrgrey;
-    .app-content-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 0.3rem 1rem;
-      .character-length {
-        font-size: 16px;
-        font-family: JetBrains-Bold;
-        line-height: normal;
-        letter-spacing: 0px;
-        color: $almostwhite;
-      }
-      .character-view {
-        font-size: 24px;
-        line-height: normal;
-        letter-spacing: 0px;
-        font-family: JetBrains-Bold;
-        color: $neongreen;
-      }
-    }
-    .range {
-      width: 100%;
-      margin: 0 1rem;
+  hr {
+    width: 90%;
+    border: thin solid $line;
+    align-self: center;
+  }
+}
+.card-calculator {
+  background-color: $white;
+  border-radius: 24px 24px 200px 24px;
+  width: 55%;
+  height: 80%;
 
-      input[type="range"] {
-        width: 90%;
-        -webkit-appearance: none;
-        appearance: none;
-        height: 8px; /* Specified height */
-        background: $verydarkgrey; /* Grey background */
-        --slider: #a4ffaf;
-        --background: #18171f;
-        &::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 28px;
-          height: 28px;
-          background: $almostwhite;
-          cursor: ew-resize;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: all ease 250ms;
-          &:hover {
-            background-color: $dakrgrey;
-            border: 2px solid $neongreen;
-          }
-        }
-      }
-    }
-    .app-content-wrapper {
+  .card-content {
+    padding: 4rem 4rem 0rem 4rem;
+    .calculator-inputs {
       display: flex;
-      flex-direction: column;
-      margin: 1.5rem 0.4rem;
-      width: 100%;
-      .form-checkbox {
+      flex-direction: row;
+      gap: 2rem;
+      .form-input {
         display: flex;
-        position: relative;
-        input[type="checkbox"] {
-          width: 20px;
-          height: 20px;
-          margin: 0.5rem 1rem;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          -o-appearance: none;
-          appearance: none;
-          border: 2px solid $almostwhite;
-          cursor: pointer;
-          transition: all ease 250ms;
-          &:hover {
-            border: 2px solid $neongreen;
-          }
-          &:checked + label::before {
-            content: "";
-            display: block;
-            position: absolute;
-            text-align: center;
-            height: 20px;
-            width: 20px;
-            left: 16px;
-            top: 8px;
-            background: $neongreen;
-          }
-          &:checked + label::after {
-            content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="$verydarkgrey" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>');
-            display: block;
-            position: absolute;
-            left: 19px;
-            top: 9px;
-          }
-        }
+        flex-direction: column;
+        gap: 0.5rem;
         label {
-          color: $almostwhite;
-          font-size: 15px;
-          line-height: normal;
-          letter-spacing: 0px;
-          font-family: JetBrains-Mono;
-          display: flex;
-          align-items: center;
-        }
-      }
-    }
-    .app-content-footer {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      .password-strength {
-        background-color: #18171f;
-        width: 90%;
-        height: 56px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        .strength-title {
-          color: $grey;
           text-transform: uppercase;
-          font-family: JetBrains-Mono;
-          margin: 1rem 1rem;
+          font-family: "Poppins-Bold", sans-serif;
+          font-size: 14px;
+          letter-spacing: 3px;
+          color: $grey;
         }
-        .strength-force {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin: 1rem 1rem;
-
-          .strength-force-title {
-            font-size: 18px;
-            letter-spacing: 0px;
-            line-height: normal;
-            color: $almostwhite;
-            text-transform: uppercase;
-            font-family: JetBrains-Bold;
+        input {
+          cursor: pointer;
+          width: 160px;
+          height: 72px;
+          outline: none;
+          font-size: 32px;
+          letter-spacing: 1%;
+          font-family: "Poppins-Bold", sans-serif;
+          border: thin solid $line;
+          border-radius: 8px;
+          padding-left: 1.5rem;
+          transition: all ease 0.3s;
+          &:hover {
+            border: thin solid slateblue;
           }
-          .strength-force-bars {
-            display: flex;
-            gap: 8px;
-            .bar {
-              width: 8px;
-              height: 28px;
-              border: 2px solid $almostwhite;
-            }
+          &:focus {
+            border: thin solid slateblue;
           }
-        }
-      }
-      button {
-        all: unset;
-        width: 90%;
-        height: 56px;
-        background-color: $neongreen;
-        color: $dakrgrey;
-        font-family: JetBrains-Mono;
-        font-size: 16px;
-        letter-spacing: 0px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        justify-content: center;
-        line-height: normal;
-        text-transform: uppercase;
-        font-weight: bold;
-        transition: all ease 250ms;
-        &:hover {
-          border: 2px solid $neongreen;
-          background: $dakrgrey;
-          color: $neongreen;
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+          -moz-appearance: textfield;
         }
       }
     }
   }
 }
 
-.clipboard-text {
-  color: $almostwhite;
-  text-transform: uppercase;
-  margin: 0 1rem;
-  font-family: JetBrains-Bold;
-  color: $neongreen;
-}
-
-@media screen and (min-width: 700px) {
-  section.app-container {
-    width: 540px;
-    .app-content {
-      height: 90%;
-    }
+section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 4rem;
+  .data-day {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .data-month {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .data-year {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  span {
+    color: $purple;
+    font-size: 104px;
+    letter-spacing: -2%;
+    line-height: 110%;
+    font-family: "Poppins-Extra-Bold", sans-serif;
+  }
+  h4 {
+    font-size: 104px;
+    letter-spacing: -2%;
+    line-height: 110%;
+    font-family: "Poppins-Extra-Bold", sans-serif;
   }
 }
 
-@media screen and (max-width: 375px) {
-  section.app-container {
-    .app-header {
-      .password-text {
-        margin-left: 0.3rem !important;
-      }
-    }
+.age {
+  opacity: 1;
+  animation: ageEaseIn 0.4s ease normal;
+}
+
+.border-error {
+  border: thin solid $red !important;
+}
+
+.error-text {
+  color: $red !important;
+  font-family: "Poppins-Regular", sans-serif;
+}
+
+@keyframes ageEaseIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes cardEaseInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-250px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
   }
 }

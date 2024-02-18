@@ -1,154 +1,156 @@
-export {};
+import { validationMonth } from "./errors";
+import { isNumber } from "./utils";
 
-const range = document.querySelector<HTMLInputElement>(".slider")!;
-const characterView =
-  document.querySelector<HTMLDivElement>(".character-view")!;
-const strengthForceTitle = document.querySelector<HTMLSpanElement>(
-  ".strength-force-title"
-)!;
+const inputs = document.querySelectorAll("input");
+const dayInput = document.querySelector<HTMLInputElement>("#day")!;
+const monthInput = document.querySelector<HTMLInputElement>("#month")!;
+const yearInput = document.querySelector<HTMLInputElement>("#year")!;
 
-const COLORS = {
-  $neongreen: "#a4ffaf",
-  $red: "#f64a4a",
-  $orange: "#fb7c58",
-  $yellow: "#f8cd65",
-  $almostwhite: "#e6e5ea",
-  $dakrgrey: "#24232c",
-};
 
-const barsContainer = document.querySelector(".strength-force-bars")!;
-const passwordInput =
-  document.querySelector<HTMLInputElement>(".password-text")!;
 
-const clipboardBtn =
-  document.querySelector<HTMLButtonElement>(".clipboard-btn");
+const button = document.querySelector<HTMLButtonElement>("button")!;
+// Results
+const dataDay = document.querySelector<HTMLInputElement>(".data-day-result")!;
+const dataMonth =
+  document.querySelector<HTMLInputElement>(".data-month-result")!;
+const dataYear = document.querySelector<HTMLInputElement>(".data-year-result")!;
 
-enum PasswordStrength {
-  TOO_WEAK = "Too Weak!",
-  WEAK = "Weak",
-  MEDIUM = "Medium",
-  STRONG = "Strong",
-}
-const CHARACTERS =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-const makePasswordByLength = (length: number) => {
-  let result = "";
-  const charactersLength = CHARACTERS.length;
-  for (let i = 0; i < length; i++) {
-    result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
-
-const fillBarsByColorElement = (
-  color: string,
-  element: HTMLDivElement | null
-) => {
-  if (element) {
-    element.style.backgroundColor = color;
-    element.style.borderColor = color;
-  }
-};
-
-const removeBarsColoredByElement = (element: HTMLDivElement) => {
-  element.style.backgroundColor = COLORS.$dakrgrey;
-  element.style.borderColor = COLORS.$almostwhite;
-};
-
-const fillBars = (
-  index: number,
-  color: string,
-  elements: NodeListOf<HTMLDivElement>
-) => {
-  for (let i = 0; i <= elements.length; i++) {
-    if (i <= index) {
-      fillBarsByColorElement(color, elements.item(i));
-    } else if (elements.item(i)) {
-      removeBarsColoredByElement(elements.item(i));
+inputs.forEach((el) => {
+  el.addEventListener("keypress", (e) => {
+    if (!isNumber(e)) {
+      e.preventDefault();
     }
-  }
-};
-
-const getStrengthPasswordByValue = (
-  strengthValue: string,
-  elements: NodeListOf<HTMLDivElement>
-) => {
-  const strength = parseInt(strengthValue);
-  const password = makePasswordByLength(strength);
-  passwordInput.value = password;
-
-  if (strength >= 1 && strength <= 5) {
-    strengthForceTitle.innerHTML = PasswordStrength.TOO_WEAK;
-    fillBars(0, COLORS.$red, elements);
-  } else if (strength > 5 && strength < 10) {
-    strengthForceTitle.innerHTML = PasswordStrength.WEAK;
-    fillBars(1, COLORS.$orange, elements);
-  } else if (strength >= 10 && strength <= 15) {
-    strengthForceTitle.innerHTML = PasswordStrength.MEDIUM;
-    fillBars(2, COLORS.$yellow, elements);
-  } else if (strength > 15) {
-    strengthForceTitle.innerHTML = PasswordStrength.STRONG;
-    fillBars(elements.length, COLORS.$neongreen, elements);
-  }
-};
-
-//  Initiliaze the range value at 50 percent
-const initializeRangeValue = () => {
-  const bg = window.getComputedStyle(range).getPropertyValue("--background");
-  const slider = getComputedStyle(range).getPropertyValue("--slider");
-  characterView.innerHTML = range.value;
-  strengthForceTitle.innerHTML = "Medium";
-  for (let i = 0; i < 3; i++) {
-    barsContainer.insertAdjacentHTML(
-      "afterbegin",
-      `<div class="bar filled"></div>`
-    );
-  }
-
-  barsContainer.insertAdjacentHTML("beforeend", `<div class="bar"></div>`);
-
-  range.setAttribute(
-    "style",
-    `background:linear-gradient(to right,${slider},${slider} ${
-      parseInt(range!.value) * 5
-    }%,${bg} ${parseInt(range!.value) * 5}%)`
-  );
-  const bars = document.querySelectorAll<HTMLDivElement>(".bar");
-  fillBars(2, COLORS.$yellow, bars);
-  return bars;
-};
-// Get nodeList Elements
-const elements = initializeRangeValue();
-
-// Add layer to copntrols range value
-range!.addEventListener("input", function (ev) {
-  const target = ev.target;
-  const value = (target as HTMLInputElement).value;
-  characterView.innerHTML = value;
-  const bg = window.getComputedStyle(range!).getPropertyValue("--background");
-  const slider = getComputedStyle(range!).getPropertyValue("--slider");
-  getStrengthPasswordByValue(value, elements);
-  range!.setAttribute(
-    "style",
-    `background:linear-gradient(to right,${slider},${slider} ${
-      parseInt(value) * 5
-    }%,${bg} ${parseInt(value) * 5}%)`
-  );
+  });
 });
 
-const copyTextToClipboard = async (text: string) => {
-  await navigator.clipboard.writeText(text);
-};
+[dayInput, monthInput].map((elem) => {
+  elem.addEventListener("keypress", (e) => {
+    const target = e.target as HTMLInputElement;
+    const value = target.value;
+    if (value.length > 1) {
+      e.preventDefault();
+    }
+  });
+});
 
-clipboardBtn?.addEventListener("click", (e) => {
+const actualYear = new Date().getFullYear();
+const actualMonth = new Date().getMonth() + 1;
+const actualDay = new Date().getDate();
+
+dayInput.addEventListener("focusout", createValidator(dayInput));
+monthInput.addEventListener("focusout", createValidator(monthInput));
+yearInput.addEventListener("focusout", createValidator(yearInput));
+
+yearInput.setAttribute("max", actualYear.toString());
+
+[dayInput, monthInput, yearInput].forEach(
+  (elem) => (elem.onkeyup = setMaxInput(elem))
+);
+function createValidator(element: HTMLInputElement) {
+  return function () {
+    const value = parseInt(element.value);
+    if (value < 10) element.value = element.value.padStart(2, "0");
+  };
+}
+
+function setMaxInput(element: HTMLInputElement) {
+  return function () {
+    const max = parseInt(element.getAttribute("max")!) || 0;
+    let value = parseInt(element.value);
+    if (value > max) value = max;
+  };
+}
+
+function calculateAge(year: number, month: number, day: number) {
+  const months = month > actualMonth ? month - actualMonth : actualMonth - month;
+  const days = actualDay + day;
+  const years =
+    months === month && days === days
+      ? actualYear - year
+      : actualYear - year;
+  return {
+    years,
+    months,
+    days,
+  };
+}
+
+dayInput.addEventListener('focusout', (_e) => {
+  const label = document.querySelector("#label-day")!;
+  if (document.querySelector("#error-day") === null) {
+    if (dayInput.value.length === 0) {
+      const p = document.createElement("p");
+      p.id = "error-day";
+      p.textContent = "Please fill this field";
+      p.classList.add("error-text");
+      label.classList.add("error-text");
+      dayInput.classList.add("border-error");
+      dayInput.insertAdjacentElement("afterend", p);
+    }
+  } else {
+    dayInput.classList.remove("border-error");
+    label.classList.remove("error-text");
+    document.querySelector("#error-day")?.remove();
+  }
+
+});
+monthInput.addEventListener('focusout', (_e) => {
+  const label = document.querySelector("#label-month")!;
+  if (document.querySelector("#error-month") === null) {
+
+    if (monthInput.value.length === 0) {
+      const p = document.createElement("p");
+      p.id = "error-month";
+      p.textContent = "Please fill this field";
+      p.classList.add("error-text");
+      label.classList.add("error-text");
+      monthInput.classList.add("border-error");
+      monthInput.insertAdjacentElement("afterend", p);
+    }
+  } else {
+    monthInput.classList.remove("border-error");
+    label.classList.remove("error-text");
+    document.querySelector("#error-month")?.remove();
+  }
+
+});
+yearInput.addEventListener('focusout', (_e) => {
+  const label = document.querySelector("#label-year")!;
+  if (document.querySelector("#error-year") === null) {
+    if (yearInput.value.length === 0) {
+      const p = document.createElement("p");
+      p.id = "error-year";
+      p.textContent = "Please fill this field";
+      p.classList.add("error-text");
+      label.classList.add("error-text");
+      yearInput.classList.add("border-error");
+      yearInput.insertAdjacentElement("afterend", p);
+    }
+  } else {
+    yearInput.classList.remove("border-error");
+    label.classList.remove("error-text");
+    document.querySelector("#error-year")?.remove();
+  }
+
+});
+
+
+button.addEventListener("click", (e) => {
   e.preventDefault();
-  copyTextToClipboard(passwordInput.value);
-  clipboardBtn.insertAdjacentHTML(
-    "beforebegin",
-    "<p class='clipboard-text'>Copied</p>"
+  if (dayInput.value.length === 0 && monthInput.value.length === 0 && yearInput.value.length === 0) {
+    return
+  }
+  const { days, months, years } = calculateAge(
+    parseInt(yearInput.value),
+    parseInt(monthInput.value),
+    parseInt(dayInput.value)
   );
+  [dataDay, dataMonth, dataYear].forEach((el) => el.classList.add("age"));
+  dataDay.innerHTML = days.toString().padStart(2, "0");
+  dataMonth.innerHTML = months.toString().padStart(2, "0");
+  dataYear.innerHTML = years.toString();
   setTimeout(() => {
-    document.querySelector(".clipboard-text")!.remove();
-  }, 900);
+    [dataDay, dataMonth, dataYear].forEach((el) => el.classList.remove("age"));
+  }, 1000)
+
 });
